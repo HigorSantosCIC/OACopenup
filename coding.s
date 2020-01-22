@@ -38,29 +38,3 @@ V: .word 20
 	
 	SORTEIO$END:
 	ret
-	
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	#addi sp, sp, -12
-	#sw ra, 0(sp)
-	#sw  a0, 4(t0) 
-	#sw a1, 8(t1)	
-	#lw a1, 8(t1)
-	#lw a0, 4(t0)
-	#lw ra, 0(sp)
-	#addi sp, sp, 12
-	
