@@ -36,8 +36,8 @@ V: .word 20
 	la	t0 V #carregando o endereço de V em t0
 	slli	t1 s1 2 #multiplicando por 4 s1, e salvando em t1
 	add	t0 t0 t1 #colocando o valor de t1 em t0
-	bge 	s1 s0 SORTEIO$MORREU #Verificando se s0 é maior que s1, se for ele morre
 	sw	s2 0(t0) #carregando na memoria s2
+	bge 	s1 s0 SORTEIO$MORREU #Verificando se s0 é maior que s1, se for ele morre
 	addi 	s1 s1 1 #add 1 no contador s1
 	j SORTEIO$FOR #retorna o loop
 	
