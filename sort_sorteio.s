@@ -1,17 +1,35 @@
+.eqv N 10
 .data
-
-V: .word 20
+VETOR:  .word 10
+#9,2,5,1,8,2,4,3,6,7,10,2,32,54,2,12,6,3,1,78,54,23,1,54,2,65,3,6,55,31
+#V: .word 20
 
 .text
 	MAIN: 
-	lw a0 V
+	lw a0 VETOR
 	jal SORTEIO
 	li a7, 10
+	ecall
+	
+#	la a0,VETOR
+#	li a1,N
+#	jal SHOW
+
+	la a0,VETOR
+	li a1,N
+	jal SORT
+
+	la a0,VETOR
+	li a1,N
+	jal SHOW
+
+	li a7,10
 	ecall
 	
 	SORTEIO:
 	mv 	s0 a0
 	addi 	s1 zero 0
+	
 	SORTEIO$FOR:
 	addi 	a7 zero 42 #ecall que chama os rand
 	li 	a1 319 #definindo o teto
@@ -28,7 +46,7 @@ V: .word 20
 	slli	s2 s2 16 #movendo os 16 bits 
 	or	s2 s2 s3 #fazendo um or pra juntar na word
 	
-	la	t0 V #carregando o endereço de V em t0
+	la	t0 VETOR #carregando o endereço de V em t0
 	slli	t1 s1 2 #multiplicando por 4 s1, e salvando em t1
 	add	t0 t0 t1 #colocando o valor de t1 em t0
 	bge 	s1 s0 SORTEIO$MORREU #Verificando se s0 é maior que s1, se for ele morre
