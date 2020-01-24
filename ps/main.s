@@ -1,18 +1,17 @@
 .data
 
 x: .string "x: "
-y: .string "y: "
+y: .string " y: "
 
 
 .text
 
-
- 
 MAIN: 
 lw a0 VETOR
 jal SORTEIO	
+
 		
-la a0,VETOR
+la a0 VETOR
 jal SORT
 	
 li a0 5	
@@ -44,4 +43,4 @@ ecall
 
 
 
-.include "coding.s"
+.include "funcoes.s"
