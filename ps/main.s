@@ -1,21 +1,34 @@
+.eqv N 10
+
 .data
 
-x: .string "x: "
+x: .string " x: "
 y: .string " y: "
 
 
 .text
 
+
+## S11 = N
+## S10 = Vetor
+
 MAIN: 
-lw a0 VETOR
+li s11,N
+slli t0, s11, 2
+sub sp, sp, t0  #Alocando espaço na pilha para o vetor
+add s10, zero, sp #Armazenando o inicio do vetor na pilha
+
+add s2, s10, zero
+add s4, s11, zero
 jal SORTEIO	
 
-		
-la a0 VETOR
+
+add a0, zero, s10
+add a1, zero, s11
 jal SORT
-	
-li a0 5	
-ebreak
+
+add a1, zero, s10
+add a0, zero, s11
 call POSICAO$SHOW
 
 li a7,10
