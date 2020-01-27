@@ -15,13 +15,12 @@ y: .string " y: "
 MAIN: 
 li s11,N
 slli t0, s11, 2
-sub sp, sp, t0  #Alocando espaço na pilha para o vetor
-add s10, zero, sp #Armazenando o inicio do vetor na pilha
+sub sp, sp, t0  	#Alocando espaço na pilha para o vetor
+add s10, zero, sp 	# Ponteiro para o vetor
 
 add s2, s10, zero
 add s4, s11, zero
 jal SORTEIO	
-
 
 add a0, zero, s10
 add a1, zero, s11
@@ -57,3 +56,4 @@ ecall
 
 
 .include "funcoes.s"
+.include "a_da_reta.s"

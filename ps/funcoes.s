@@ -1,6 +1,7 @@
 .data
 pula: .string "\n"
 VETOR:  .word 5
+ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 .text
 ###########################################################################################
 # ARGUMENTOS: A0 = NUMERO DE PONTOS 
@@ -156,3 +157,87 @@ exit1: 	lw s0,0(sp)
 	
 	POSICAO$ENDLOOP:	
 	#ret
+	
+
+###########################################################################################
+# ACESSAR_VETOR
+# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DA POSICAO DO VETOR A SER ACESSADO
+# @RETURN A0 VALOR DE X, A1 VALOR DE Y
+###########################################################################################
+ACESSAR_VETOR:
+addi sp,sp,-4
+sw ra,0(sp)
+	
+slli 	a1 a1 2
+add 	t0 a0 a1
+lh   	a1 0(t0)
+lh	a0 2(t0)
+
+ACESSAR_VETOR_END:
+lw ra,0(sp)
+addi sp,sp,4
+ret
+	
+
+###########################################################################################
+# liga_pontos
+# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DE PONTOS
+# @RETURN colocar os numeros em ordem de ligacao
+###########################################################################################
+liga_pontos:
+addi sp,sp,-4
+# salvar os registradores
+sw ra,0(sp)
+
+addi 	s0 zero 1 
+addi 	s1 zero N
+la 	s2 ordem_pontos
+slli	t0 s1 2
+addi 	s2 t0 s2
+addi	s3 zero 0
+addi 	s4 zero 0
+
+mv 	s10 a0
+mv 	s11 a1
+
+mv 	a0 s10
+addi	a1 zero 0
+addi 	a2 zero N
+addi 	a2 a2 -1
+call coeficiente_angular
+
+fmv.s	fs0 fa0		# coeficiente angular 
+
+liga_pontos_for: 
+	blt 	s0 s1 liga_pontos_end_for
+
+	mv 	a0 s10
+	addi	a1 zero 0
+	add 	a2 zero s0
+	addi 	a2 a2 -1
+	call coeficiente_angular
+	
+	fle.s 	t0 ft0 fs0
+	
+	
+	
+
+	addi 	s0 s0 1
+	j	liga_pontos_for
+liga_pontos_end_for:
+
+#	a0 s0 # x1
+# 	a1 s1 # y1
+mv 	a2 s2 # x0
+mv 	a3 s3 # y0
+call coeficiente_angular
+
+
+
+
+
+
+liga_pontos_end:
+lw ra,0(sp)
+addi sp,sp,4
+ret
