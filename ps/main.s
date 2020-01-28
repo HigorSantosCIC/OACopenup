@@ -1,4 +1,4 @@
-.eqv N 10
+.eqv N 100
 
 .data
 

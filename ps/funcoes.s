@@ -1,7 +1,7 @@
 .data
 pula: .string "\n"
 VETOR:  .word 5
-ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 .text
 ###########################################################################################
 # ARGUMENTOS: A0 = NUMERO DE PONTOS 
@@ -200,7 +200,8 @@ addi 	s1 zero N
 
 # Criar vetor com a sequencia de pontos a serem ligados ########
 la 	s2 ordem_pontos
-addi 	s2 s2 40
+slli 	t0 s1 2
+add 	s2 s2 t0
 sw	zero 0(s2) 	# Salva o primeiro ponto que é o valor 0
 addi	s2 s2 -4	# Salva o ponteiro para os numeros abaixo
 addi	s3 s2 8 	# Salva o ponteiro para os numeros acima
@@ -276,8 +277,11 @@ li 	s2 N
 mv 	s3 a2
 mv 	a4 a1
 
-lw 	t1 0(s0)
-sw 	t1 40(s0) 	# Armazena o primeiro ponto no fim do vetor
+mv 	t2 s0
+lw 	t1 0(t2)
+slli 	t3 s2 2
+add	t2 t2 t3
+sw 	t1 0(t2) 	# Armazena o primeiro ponto no fim do vetor
 
 print_liga_pontos_for:
 beq 	s1 s2 print_liga_pontos_for_end 	

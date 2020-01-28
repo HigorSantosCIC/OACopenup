@@ -36,7 +36,7 @@ sub t1 s0 s2 # x1 - x0
 
 fcvt.s.w ft0 t0 #converte  para float
 fcvt.s.w ft1 t1 #converte para float
-fdiv.s fa0 ft0 ft1 #divide e salva em a
+fdiv.s 	fa0 ft0 ft1 #divide e salva em a
 
 coeficiente_angular_end:
 lw s3,16(sp)
