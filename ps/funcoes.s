@@ -182,20 +182,29 @@ ret
 ###########################################################################################
 # liga_pontos
 # ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DE PONTOS
-# @RETURN colocar os numeros em ordem de ligacao
+# @RETURN Retorna a0 ponteiro para a pilha com o inicio do vetor 
 ###########################################################################################
 liga_pontos:
-addi sp,sp,-4
-# salvar os registradores
+addi sp,sp,-32
+fsw  fs0, 28(sp)
+sw s11, 24(sp)
+sw s10, 20(sp)
+sw s3, 16(sp)
+sw s2, 12(sp)
+sw s1, 8(sp)
+sw s0, 4(sp)
 sw ra,0(sp)
 
 addi 	s0 zero 1 
 addi 	s1 zero N
+
+# Criar vetor com a sequencia de pontos a serem ligados ########
 la 	s2 ordem_pontos
-slli	t0 s1 2
-addi 	s2 t0 s2
-addi	s3 zero 0
-addi 	s4 zero 0
+addi 	s2 s2 40
+sw	zero 0(s2) 	# Salva o primeiro ponto que é o valor 0
+addi	s2 s2 -4	# Salva o ponteiro para os numeros abaixo
+addi	s3 s2 8 	# Salva o ponteiro para os numeros acima
+# Criar vetor com a sequencia de pontos a serem ligados ########
 
 mv 	s10 a0
 mv 	s11 a1
@@ -209,35 +218,102 @@ call coeficiente_angular
 fmv.s	fs0 fa0		# coeficiente angular 
 
 liga_pontos_for: 
-	blt 	s0 s1 liga_pontos_end_for
+	bge 	s0 s1 liga_pontos_end_for
 
-	mv 	a0 s10
-	addi	a1 zero 0
-	add 	a2 zero s0
-	addi 	a2 a2 -1
+	mv 	a0 s10	 # ponteiro para as coordenadas ordenadas
+	add 	a1 zero s0
+	addi	a2 zero 0
 	call coeficiente_angular
 	
-	fle.s 	t0 ft0 fs0
+	fle.s 	t0 fa0 fs0
 	
+	beq 	t0 zero liga_pontos_acima
+	liga_pontos_abaixo:
+	sw	s0 0(s2)	# Salva o numero do ponto
+	addi	s2 s2 -4	# desloca o ponteiro para a posicao anterior
+	j	liga_pontos_endif
+	liga_pontos_acima:
+	sw	s0 0(s3)	# salva o numero do ponto
+	addi	s3 s3 4		# desloca o ponteiro para a proxima posicao 
+	liga_pontos_endif:
 	
-	
-
 	addi 	s0 s0 1
 	j	liga_pontos_for
 liga_pontos_end_for:
 
-#	a0 s0 # x1
-# 	a1 s1 # y1
-mv 	a2 s2 # x0
-mv 	a3 s3 # y0
-call coeficiente_angular
-
-
-
-
-
+# Deve adicionar e subtrair pois os ponteiros são adicionados a mais no loop
+addi	a0 s2 4
 
 liga_pontos_end:
+flw  fs0, 28(sp)
+lw s11, 24(sp)
+lw s10, 20(sp)
+lw s3, 16(sp)
+lw s2, 12(sp)
+lw s1, 8(sp)
+lw s0, 4(sp)
 lw ra,0(sp)
-addi sp,sp,4
+addi sp,sp, 32
+ret
+
+
+###########################################################################################
+# print_liga_pontos
+# ARGUMENTOS: a0 = ponteiro para inicio do vetor, a1 = frame a ser printada, a2 = ponteiro para as coordenadas
+# @RETURN nada
+###########################################################################################
+print_liga_pontos:
+addi sp,sp,-20
+lw s3, 16(sp)
+lw s2, 12(sp)
+lw s1, 8(sp)
+lw s0, 4(sp)
+sw ra, 0(sp)
+
+mv 	s0 a0
+addi 	s1 zero 0
+li 	s2 N
+mv 	s3 a2
+mv 	a4 a1
+
+lw 	t1 0(s0)
+sw 	t1 40(s0) 	# Armazena o primeiro ponto no fim do vetor
+
+print_liga_pontos_for:
+beq 	s1 s2 print_liga_pontos_for_end 	
+
+lw 	t0 0(s0)  	# pega o valor da memoria
+mv 	a0 s3		# Ponteiro para o vetor
+mv 	a1 t0		# Posicao do vetor
+call ACESSAR_VETOR
+
+mv 	a2 a0		# a2 = x0
+mv 	a3 a1		# a3 = y0
+
+lw 	t0 4(s0)  	# pega o valor da memoria
+mv 	a0 s3		# Ponteiro para o vetor
+mv 	a1 t0		# Posicao do vetor
+call ACESSAR_VETOR
+
+# a0 = x1
+# a1 = y1
+# a2 = x0
+# a3 = y0
+li 	a4 0xff
+li	a5 0
+li 	a7 147
+ecall
+
+addi 	s0 s0 4 # proxima posicao do vetor
+addi 	s1 s1 1
+j	print_liga_pontos_for
+print_liga_pontos_for_end:
+
+
+sw s3, 16(sp)
+sw s2, 12(sp)
+sw s1, 8(sp)
+sw s0, 4(sp)
+lw ra,0(sp)
+addi sp,sp, 20
 ret

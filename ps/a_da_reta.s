@@ -33,7 +33,6 @@ mv s1 a1 #y1
 
 sub t0 s1 s3 # y1 - y0
 sub t1 s0 s2 # x1 - x0
-ebreak
 
 fcvt.s.w ft0 t0 #converte  para float
 fcvt.s.w ft1 t1 #converte para float
