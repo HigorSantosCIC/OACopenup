@@ -69,45 +69,51 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 ##############################################################	
 	
 	
-SWAP:	slli t1,a1,2
-	add t1,a0,t1
-	lw t0,0(t1)
-	lw t2,4(t1)
-	sw t2,0(t1)
-	sw t0,4(t1)
-	ret
+SWAP:	
+slli 	t1 a1 2
+add 	t1 a0 t1
+lw 	t0 0(t1)
+lw 	t2 4(t1)
+sw 	t2 0(t1)
+sw 	t0 4(t1)
+ret
 
-SORT:	addi sp,sp,-20
-	sw ra,16(sp)
-	sw s3,12(sp)
-	sw s2,8(sp)
-	sw s1,4(sp)
-	sw s0,0(sp)
-	mv s2,a0
-	mv s3,a1
-	mv s0,zero
-for1:	bge s0,s3,exit1
-	addi s1,s0,-1
-for2:	blt s1,zero,exit2
-	slli t1,s1,2
-	add t2,s2,t1
-	lw t3,0(t2)
-	lw t4,4(t2)
-	bge t4,t3,exit2
-	mv a0,s2
-	mv a1,s1
-	jal SWAP
-	addi s1,s1,-1
-	j for2
-exit2:	addi s0,s0,1
-	j for1
-exit1: 	lw s0,0(sp)
-	lw s1,4(sp)
-	lw s2,8(sp)
-	lw s3,12(sp)
-	lw ra,16(sp)
-	addi sp,sp,20
-	ret
+SORT:	
+addi 	sp sp -20
+sw 	ra 16(sp)
+sw 	s3 12(sp)
+sw 	s2 8(sp)
+sw 	s1 4(sp)
+sw 	s0 0(sp)
+mv 	s2 a0
+mv 	s3 a1
+mv 	s0 zero
+for1:
+bge 	s0 s3 exit1
+addi 	s1 s0 -1
+for2:	
+blt 	s1 zero exit2
+slli 	t1 s1 2
+add 	t2 s2 t1
+lw 	t3 0(t2)
+lw 	t4 4(t2)
+bge 	t4 t3 exit2
+mv 	a0 s2
+mv 	a1 s1
+jal SWAP
+addi s1 s1 -1
+j for2
+exit2:	
+addi s0 s0 1
+j for1
+exit1: 	
+lw 	s0 0(sp)
+lw 	s1 4(sp)
+lw 	s2 8(sp)
+lw 	s3 12(sp)
+lw 	ra 16(sp)
+addi 	sp sp 20
+ret
 	
 #################################################################################################################
 # ACESSA A MEMORIA ONDE EST√ÉO ARMAZENADOS OS VALORES DO VETOR
@@ -116,47 +122,46 @@ exit1: 	lw s0,0(sp)
 #
 #################################################################################################################	
 	
-	POSICAO$SHOW:
-	mv s2 a0   # n em s2
-	mv s4 a1   # Vetor em s4
-	add s3 zero zero
-	POSICAO$LOOP:
-	bge s3 s2 POSICAO$ENDLOOP
-
-	lh s0 0(s4)
-	lh s1 2(s4)
+POSICAO$SHOW:
+mv 	s2 a0   # n em s2
+mv 	s4 a1   # Vetor em s4
+add 	s3 zero zero
+POSICAO$LOOP:
+bge 	s3 s2 POSICAO$ENDLOOP
+lh 	s0 0(s4)
+lh 	s1 2(s4)
 	
-	li a7 4
-	la a0 x
-	ecall
+li 	a7 4
+la 	a0 x
+ecall
 	
-	li a7 1
-	mv a0 s1
-	ecall
+li 	a7 1
+mv 	a0 s1
+ecall
 	
 #	li a7 4
 #	la a0 pula
 #	ecall
 	
-	li a7 4
-	la a0 y
-	ecall
+li 	a7 4
+la 	a0 y
+ecall
 	
-	li a7 1
-	mv a0 s0
-	ecall
+li 	a7 1
+mv 	a0 s0
+ecall
 	
-	li a7 4
-	la a0 pula
-	ecall
+li 	a7 4
+la 	a0 pula
+ecall
 		
-	addi s4 s4 4
-	addi s3 s3 1
+addi 	s4 s4 4
+addi 	s3 s3 1
 	
-	j POSICAO$LOOP
+j POSICAO$LOOP
 	
-	POSICAO$ENDLOOP:	
-	#ret
+POSICAO$ENDLOOP:	
+#ret
 	
 
 ###########################################################################################
@@ -165,8 +170,8 @@ exit1: 	lw s0,0(sp)
 # @RETURN A0 VALOR DE X, A1 VALOR DE Y
 ###########################################################################################
 ACESSAR_VETOR:
-addi sp,sp,-4
-sw ra,0(sp)
+addi 	sp sp -4
+sw 	ra 0(sp)
 	
 slli 	a1 a1 2
 add 	t0 a0 a1
@@ -174,8 +179,8 @@ lh   	a1 0(t0)
 lh	a0 2(t0)
 
 ACESSAR_VETOR_END:
-lw ra,0(sp)
-addi sp,sp,4
+lw 	ra 0(sp)
+addi 	sp sp 4
 ret
 	
 
@@ -185,15 +190,15 @@ ret
 # @RETURN Retorna a0 ponteiro para a pilha com o inicio do vetor 
 ###########################################################################################
 liga_pontos:
-addi sp,sp,-32
-fsw  fs0, 28(sp)
-sw s11, 24(sp)
-sw s10, 20(sp)
-sw s3, 16(sp)
-sw s2, 12(sp)
-sw s1, 8(sp)
-sw s0, 4(sp)
-sw ra,0(sp)
+addi 	sp sp -32
+fsw  	fs0 28(sp)
+sw 	s11 24(sp)
+sw 	s10 20(sp)
+sw 	s3 16(sp)
+sw 	s2 12(sp)
+sw 	s1 8(sp)
+sw 	s0 4(sp)
+sw 	ra 0(sp)
 
 addi 	s0 zero 1 
 addi 	s1 zero N
@@ -219,42 +224,44 @@ call coeficiente_angular
 fmv.s	fs0 fa0		# coeficiente angular 
 
 liga_pontos_for: 
-	bge 	s0 s1 liga_pontos_end_for
+bge 	s0 s1 liga_pontos_end_for
+mv 	a0 s10	 # ponteiro para as coordenadas ordenadas
+add 	a1 zero s0
+addi	a2 zero 0
+call coeficiente_angular
 
-	mv 	a0 s10	 # ponteiro para as coordenadas ordenadas
-	add 	a1 zero s0
-	addi	a2 zero 0
-	call coeficiente_angular
-	
-	fle.s 	t0 fa0 fs0
-	
-	beq 	t0 zero liga_pontos_acima
-	liga_pontos_abaixo:
-	sw	s0 0(s2)	# Salva o numero do ponto
-	addi	s2 s2 -4	# desloca o ponteiro para a posicao anterior
-	j	liga_pontos_endif
-	liga_pontos_acima:
-	sw	s0 0(s3)	# salva o numero do ponto
-	addi	s3 s3 4		# desloca o ponteiro para a proxima posicao 
-	liga_pontos_endif:
-	
-	addi 	s0 s0 1
-	j	liga_pontos_for
+fle.s 	t0 fa0 fs0
+
+beq 	t0 zero liga_pontos_acima
+
+liga_pontos_abaixo:
+sw	s0 0(s2)	# Salva o numero do ponto
+addi	s2 s2 -4	# desloca o ponteiro para a posicao anterior
+j	liga_pontos_endif
+
+liga_pontos_acima:
+sw	s0 0(s3)	# salva o numero do ponto
+addi	s3 s3 4		# desloca o ponteiro para a proxima posicao 
+
+liga_pontos_endif:	
+addi 	s0 s0 1
+j	liga_pontos_for
+
 liga_pontos_end_for:
 
 # Deve adicionar e subtrair pois os ponteiros s„o adicionados a mais no loop
 addi	a0 s2 4
 
 liga_pontos_end:
-flw  fs0, 28(sp)
-lw s11, 24(sp)
-lw s10, 20(sp)
-lw s3, 16(sp)
-lw s2, 12(sp)
-lw s1, 8(sp)
-lw s0, 4(sp)
-lw ra,0(sp)
-addi sp,sp, 32
+flw 	fs0 28(sp)
+lw 	s11 24(sp)
+lw 	s10 20(sp)
+lw 	s3 16(sp)
+lw 	s2 12(sp)
+lw 	s1 8(sp)
+lw 	s0 4(sp)
+lw 	ra 0(sp)
+addi 	sp sp 32
 ret
 
 
@@ -264,12 +271,12 @@ ret
 # @RETURN nada
 ###########################################################################################
 print_liga_pontos:
-addi sp,sp,-20
-lw s3, 16(sp)
-lw s2, 12(sp)
-lw s1, 8(sp)
-lw s0, 4(sp)
-sw ra, 0(sp)
+addi 	sp sp -20
+lw 	s3 16(sp)
+lw 	s2 12(sp)
+lw 	s1 8(sp)
+lw 	s0 4(sp)
+sw 	ra 0(sp)
 
 mv 	s0 a0
 addi 	s1 zero 0
@@ -314,10 +321,10 @@ j	print_liga_pontos_for
 print_liga_pontos_for_end:
 
 
-sw s3, 16(sp)
-sw s2, 12(sp)
-sw s1, 8(sp)
-sw s0, 4(sp)
-lw ra,0(sp)
-addi sp,sp, 20
+sw 	s3 16(sp)
+sw 	s2 12(sp)
+sw 	s1 8(sp)
+sw 	s0 4(sp)
+lw 	ra 0(sp)
+addi 	sp sp 20
 ret

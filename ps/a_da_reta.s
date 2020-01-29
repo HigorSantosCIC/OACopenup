@@ -10,12 +10,12 @@
 # @RETURN fa0 coeficiente angular
 ###########################################################################################
 coeficiente_angular:
-addi sp,sp,-20
-sw s3,16(sp)
-sw s2,12(sp)
-sw s1,8(sp)
-sw s0,4(sp)
-sw ra,0(sp)
+addi 	sp sp -20
+sw 	s3 16(sp)
+sw 	s2 12(sp)
+sw 	s1 8(sp)
+sw 	s0 4(sp)
+sw 	ra 0(sp)
 
 mv 	s4 a0  # ponteiro para o vetor
 #	a1 = a1
@@ -39,10 +39,10 @@ fcvt.s.w ft1 t1 #converte para float
 fdiv.s 	fa0 ft0 ft1 #divide e salva em a
 
 coeficiente_angular_end:
-lw s3,16(sp)
-lw s2,12(sp)
-lw s1,8(sp)
-lw s0,4(sp)
-lw ra,0(sp)
-addi sp,sp,20
+lw 	s3 16(sp)
+lw 	s2 12(sp)
+lw 	s1 8(sp)
+lw 	s0 4(sp)
+lw 	ra 0(sp)
+addi 	sp sp 20
 ret
