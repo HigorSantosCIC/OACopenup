@@ -16,7 +16,7 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	SORTEIO:
 	add 	s1 zero zero
 	
-	SORTEIO$FOR:
+	SORTEIO_FOR:
 	addi 	a7 zero 42 #ecall que chama os rand
 	li 	a1 319 #definindo o teto
 	li 	a0 1
@@ -36,7 +36,7 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	add	t2 t1 s2 #colocando o valor de t1 em t0
 	
 	 
-	bge 	s1 s4 SORTEIO$MORREU #Verificando se s0 é maior que s1, se for ele morre
+	bge 	s1 s4 SORTEIO_MORREU #Verificando se s0 é maior que s1, se for ele morre
 	sw	t0 0(t2) #carregando na memoria s2
 	
 				
@@ -48,9 +48,9 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 #	ecall
 	
 	addi 	s1 s1 1 #add 1 no contador s1
-	j SORTEIO$FOR #retorna o loop
+	j SORTEIO_FOR #retorna o loop
 	
-	SORTEIO$MORREU:
+	SORTEIO_MORREU:
 	ret
 ##############################################################
 #
@@ -122,12 +122,12 @@ ret
 #
 #################################################################################################################	
 	
-POSICAO$SHOW:
+POSICAO_SHOW:
 mv 	s2 a0   # n em s2
 mv 	s4 a1   # Vetor em s4
 add 	s3 zero zero
-POSICAO$LOOP:
-bge 	s3 s2 POSICAO$ENDLOOP
+POSICAO_LOOP:
+bge 	s3 s2 POSICAO_ENDLOOP
 lh 	s0 0(s4)
 lh 	s1 2(s4)
 	
@@ -158,9 +158,9 @@ ecall
 addi 	s4 s4 4
 addi 	s3 s3 1
 	
-j POSICAO$LOOP
+j POSICAO_LOOP
 	
-POSICAO$ENDLOOP:	
+POSICAO_ENDLOOP:	
 #ret
 	
 
@@ -185,11 +185,11 @@ ret
 	
 
 ###########################################################################################
-# liga_pontos
+# LIGA_PONTOS
 # ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DE PONTOS
 # @RETURN Retorna a0 ponteiro para a pilha com o inicio do vetor 
 ###########################################################################################
-liga_pontos:
+LIGA_PONTOS:
 addi 	sp sp -32
 fsw  	fs0 28(sp)
 sw 	s11 24(sp)
@@ -223,8 +223,8 @@ call coeficiente_angular
 
 fmv.s	fs0 fa0		# coeficiente angular 
 
-liga_pontos_for: 
-bge 	s0 s1 liga_pontos_end_for
+LIGA_PONTOS_for: 
+bge 	s0 s1 LIGA_PONTOS_end_for
 mv 	a0 s10	 # ponteiro para as coordenadas ordenadas
 add 	a1 zero s0
 addi	a2 zero 0
@@ -232,27 +232,27 @@ call coeficiente_angular
 
 fle.s 	t0 fa0 fs0
 
-beq 	t0 zero liga_pontos_acima
+beq 	t0 zero LIGA_PONTOS_acima
 
-liga_pontos_abaixo:
+LIGA_PONTOS_abaixo:
 sw	s0 0(s2)	# Salva o numero do ponto
 addi	s2 s2 -4	# desloca o ponteiro para a posicao anterior
-j	liga_pontos_endif
+j	LIGA_PONTOS_endif
 
-liga_pontos_acima:
+LIGA_PONTOS_acima:
 sw	s0 0(s3)	# salva o numero do ponto
 addi	s3 s3 4		# desloca o ponteiro para a proxima posicao 
 
-liga_pontos_endif:	
+LIGA_PONTOS_endif:	
 addi 	s0 s0 1
-j	liga_pontos_for
+j	LIGA_PONTOS_for
 
-liga_pontos_end_for:
+LIGA_PONTOS_end_for:
 
 # Deve adicionar e subtrair pois os ponteiros s�o adicionados a mais no loop
 addi	a0 s2 4
 
-liga_pontos_end:
+LIGA_PONTOS_end:
 flw 	fs0 28(sp)
 lw 	s11 24(sp)
 lw 	s10 20(sp)
@@ -266,11 +266,11 @@ ret
 
 
 ###########################################################################################
-# print_liga_pontos
+# print_LIGA_PONTOS
 # ARGUMENTOS: a0 = ponteiro para inicio do vetor, a1 = frame a ser printada, a2 = ponteiro para as coordenadas
 # @RETURN nada
 ###########################################################################################
-print_liga_pontos:
+print_LIGA_PONTOS:
 addi 	sp sp -20
 lw 	s3 16(sp)
 lw 	s2 12(sp)
@@ -290,8 +290,8 @@ slli 	t3 s2 2
 add	t2 t2 t3
 sw 	t1 0(t2) 	# Armazena o primeiro ponto no fim do vetor
 
-print_liga_pontos_for:
-beq 	s1 s2 print_liga_pontos_for_end 	
+print_LIGA_PONTOS_for:
+beq 	s1 s2 print_LIGA_PONTOS_for_end 	
 
 lw 	t0 0(s0)  	# pega o valor da memoria
 mv 	a0 s3		# Ponteiro para o vetor
@@ -317,8 +317,8 @@ ecall
 
 addi 	s0 s0 4 # proxima posicao do vetor
 addi 	s1 s1 1
-j	print_liga_pontos_for
-print_liga_pontos_for_end:
+j	print_LIGA_PONTOS_for
+print_LIGA_PONTOS_for_end:
 
 
 sw 	s3 16(sp)

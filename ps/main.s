@@ -32,16 +32,16 @@ jal SORT
 
 add 	a1 zero s10
 add 	a0 zero s11
-call POSICAO$SHOW
+call POSICAO_SHOW
 
 mv 	a0 s10
 li 	a1 N
-call liga_pontos
+call LIGA_PONTOS
 
 # a0 ponteiro do inicio do vetor
 addi 	a1 zero 0
 mv	a2 s10
-call print_liga_pontos
+call print_LIGA_PONTOS
 
 li a7 10
 ecall
