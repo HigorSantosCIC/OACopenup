@@ -17,17 +17,17 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	add 	s1 zero zero
 	
 	SORTEIO_FOR:
-	addi 	a7 zero 42 #ecall que chama os rand
-	li 	a1 319 #definindo o teto
-	li 	a0 1
-	ecall	
-	mv 	t0 a0 ## salvando o valor aleatorio em t0
+	addi 	a7 zero 41 #ecall que chama os rand
+	ecall
+	mv t0, a0
+	li t3 320
+	remu t0, a0, t3  	
 			
-	addi 	a7 zero 42 #ecall que chama os rand
-	li 	a1 239 #definindo o teto
-	li 	a0 1
-	ecall	
-	mv 	t1 a0 ## salvando o valor aleatorio em t1
+	addi 	a7 zero 41 #ecall que chama os rand
+	ecall
+	mv t1 a0
+	li t4 240
+	remu t1, a0, t4	
 	
 	slli	t0 t0 16 #movendo os 16 bits 
 	or	t0 t0 t1 #fazendo um or pra juntar na word
@@ -38,15 +38,7 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	 
 	bge 	s1 s4 SORTEIO_MORREU #Verificando se s0 é maior que s1, se for ele morre
 	sw	t0 0(t2) #carregando na memoria s2
-	
-				
-#	li a7, 1
-#	ecall
-			
-#	la a0, pula
-#	li a7 4
-#	ecall
-	
+
 	addi 	s1 s1 1 #add 1 no contador s1
 	j SORTEIO_FOR #retorna o loop
 	
@@ -322,3 +314,4 @@ addi 	a0, zero, 0xFF 		## printa tela de branco
 addi 	a1, zero, 0
 addi 	a7, zero, 148
 ecall
+
