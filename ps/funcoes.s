@@ -4,14 +4,14 @@ VETOR:  .word 5
 ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 .text
 ###########################################################################################
-# ARGUMENTOS: A0 = NUMERO DE PONTOS 
-# @BRIEF ELE SELECIONA O "n" NUMERO DE PONTOS ALEATORIOS QUE SERAO GERADOS PARA AS COORDENADAS X E Y SALVOS NO VETOR
-# @RETURN NENHUM
+# ARGUMENTOS: A0 = a6UMERO DE PONTOS 
+# @BRIEF ELE SELECIONA O "n" a6UMERO DE PONTOS ALEATORIOS QUE SERAO GERADOS PARA AS COORDENADAS X E Y SALVOS a6O VETOR
+# @RETURN a6ENHUM
 #
 ###########################################################################################
 	
 	## S2 = Vetor desordenado
-	## S4 = N
+	## S4 = a6
 	## S3 = Vetor ordenado
 	SORTEIO:
 	add 	s1 zero zero
@@ -21,13 +21,13 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	li 	a1 319 #definindo o teto
 	li 	a0 1
 	ecall	
-	mv 	t0 a0 ## salvando o valor aleatorio em s2
+	mv 	t0 a0 ## salvando o valor aleatorio em t0
 			
 	addi 	a7 zero 42 #ecall que chama os rand
 	li 	a1 239 #definindo o teto
 	li 	a0 1
 	ecall	
-	mv 	t1 a0 ## salvando o valor aleatorio em s3
+	mv 	t1 a0 ## salvando o valor aleatorio em t1
 	
 	slli	t0 t0 16 #movendo os 16 bits 
 	or	t0 t0 t1 #fazendo um or pra juntar na word
@@ -54,18 +54,9 @@ ordem_pontos: .word 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	ret
 ##############################################################
 #
-# TESTAR O HALFWORD NA MARRA
+# ::::::::::::::::::FUN√á√ÉO DE SORT::::::::::::::::::
 #
-#	lh s5 0(s2)
-	#lh s6 2(s2)
-	
-	#li a7, 1
-	#mv a0 s5
-	#ecall
-	
-	#li a7, 1
-	#mv a0 s6
-	#ecall
+#
 ##############################################################	
 	
 	
@@ -138,11 +129,7 @@ ecall
 li 	a7 1
 mv 	a0 s1
 ecall
-	
-#	li a7 4
-#	la a0 pula
-#	ecall
-	
+
 li 	a7 4
 la 	a0 y
 ecall
@@ -166,7 +153,7 @@ POSICAO_ENDLOOP:
 
 ###########################################################################################
 # ACESSAR_VETOR
-# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DA POSICAO DO VETOR A SER ACESSADO
+# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = a6UMERO DA POSICAO DO VETOR A SER ACESSADO
 # @RETURN A0 VALOR DE X, A1 VALOR DE Y
 ###########################################################################################
 ACESSAR_VETOR:
@@ -186,7 +173,7 @@ ret
 
 ###########################################################################################
 # LIGA_PONTOS
-# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUMERO DE PONTOS
+# ARGUMENTOS: a0 = ponteiro para o vetor, a1 = NUUMERO DE PONTOS
 # @RETURN Retorna a0 ponteiro para a pilha com o inicio do vetor 
 ###########################################################################################
 LIGA_PONTOS:
@@ -201,13 +188,14 @@ sw 	s0 4(sp)
 sw 	ra 0(sp)
 
 addi 	s0 zero 1 
-addi 	s1 zero N
+add 	s1 zero s6
+
 
 # Criar vetor com a sequencia de pontos a serem ligados ########
 la 	s2 ordem_pontos
 slli 	t0 s1 2
 add 	s2 s2 t0
-sw	zero 0(s2) 	# Salva o primeiro ponto que È o valor 0
+sw	zero 0(s2) 	# Salva o primeiro ponto que ÔøΩ o valor 0
 addi	s2 s2 -4	# Salva o ponteiro para os numeros abaixo
 addi	s3 s2 8 	# Salva o ponteiro para os numeros acima
 # Criar vetor com a sequencia de pontos a serem ligados ########
@@ -217,7 +205,7 @@ mv 	s11 a1
 
 mv 	a0 s10
 addi	a1 zero 0
-addi 	a2 zero N
+add 	a2 zero s6
 addi 	a2 a2 -1
 call coeficiente_angular
 
@@ -249,7 +237,7 @@ j	LIGA_PONTOS_for
 
 LIGA_PONTOS_end_for:
 
-# Deve adicionar e subtrair pois os ponteiros s„o adicionados a mais no loop
+# Deve adicionar e subtrair pois os ponteiros s√£o adicionados a mais no loop
 addi	a0 s2 4
 
 LIGA_PONTOS_end:
@@ -264,12 +252,12 @@ lw 	ra 0(sp)
 addi 	sp sp 32
 ret
 
-
 ###########################################################################################
 # print_LIGA_PONTOS
 # ARGUMENTOS: a0 = ponteiro para inicio do vetor, a1 = frame a ser printada, a2 = ponteiro para as coordenadas
 # @RETURN nada
 ###########################################################################################
+
 print_LIGA_PONTOS:
 addi 	sp sp -20
 lw 	s3 16(sp)
@@ -280,7 +268,7 @@ sw 	ra 0(sp)
 
 mv 	s0 a0
 addi 	s1 zero 0
-li 	s2 N
+add 	s2 zero s6
 mv 	s3 a2
 mv 	a4 a1
 
@@ -292,7 +280,6 @@ sw 	t1 0(t2) 	# Armazena o primeiro ponto no fim do vetor
 
 print_LIGA_PONTOS_for:
 beq 	s1 s2 print_LIGA_PONTOS_for_end 	
-
 lw 	t0 0(s0)  	# pega o valor da memoria
 mv 	a0 s3		# Ponteiro para o vetor
 mv 	a1 t0		# Posicao do vetor
@@ -310,7 +297,9 @@ call ACESSAR_VETOR
 # a1 = y1
 # a2 = x0
 # a3 = y0
-li 	a4 0xff
+
+#li 	a4  #cor do print, como aleatorizar?
+#jal	cor_aleatoria
 li	a5 0
 li 	a7 147
 ecall
@@ -318,9 +307,8 @@ ecall
 addi 	s0 s0 4 # proxima posicao do vetor
 addi 	s1 s1 1
 j	print_LIGA_PONTOS_for
+
 print_LIGA_PONTOS_for_end:
-
-
 sw 	s3 16(sp)
 sw 	s2 12(sp)
 sw 	s1 8(sp)
@@ -328,3 +316,9 @@ sw 	s0 4(sp)
 lw 	ra 0(sp)
 addi 	sp sp 20
 ret
+
+clear_screen:
+addi 	a0, zero, 0xFF 		## printa tela de branco
+addi 	a1, zero, 0
+addi 	a7, zero, 148
+ecall
