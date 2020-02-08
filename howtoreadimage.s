@@ -84,6 +84,116 @@ LOOPHMS:li a0,1000   # 1 segundo
 
 .include "SYSTEMv17b.s"
 
+DRAW:	li t2,0	
+	li t0,0
+	li s4,10
+	li s5,20
+LOOPDRAW: li t1,0
+	  li s0,0
+	  li s1,0
+	  li s2,319
+	  li s3,239
+	li t1,0	  
+FOR1:	bge t1,s4, SAI1
+	#mv a0,s0
+	#mv a1,s1
+	#mv a2,s2
+	#mv a3,s3
+	#mv a4,t2
+	li a0 105
+	li a1 5
+	li a2 105
+	li a3 235
+	li a5,0
+	li a7,47
+	ecall
+	addi s0,s0,1
+	addi s2,s2,-1
+	add t2,t2,t0
+	addi t1,t1,1
+	j FOR1
+
+SAI1:	li s2,0
+	li s1,0
+	li s0,319
+	li s3,239
+	li t1,0
+FOR2:	bge t1,s5, SAI2
+	#mv a0,s0
+	#mv a1,s1
+	#mv a2,s2
+	#mv a3,s3
+	#mv a4,t2
+	li a0 105
+	li a1 5
+	li a2 314
+	li a3 5
+	li a4 0x0038
+	li a5,0
+	li a7,47
+	ecall
+	addi s1,s1,1
+	addi s3,s3,-1
+	add t2,t2,t0
+	addi t1,t1,1
+	j FOR2
+SAI2:	addi t0,t0,1
+	j LOOPDRAW
+DRAW:	li t2,0	
+	li t0,0
+	li s4,10
+	li s5,20
+LOOPDRAW: li t1,0
+	  li s0,0
+	  li s1,0
+	  li s2,319
+	  li s3,239
+	li t1,0	  
+FOR1:	bge t1,s4, SAI1
+	#mv a0,s0
+	#mv a1,s1
+	#mv a2,s2
+	#mv a3,s3
+	#mv a4,t2
+	li a0 105
+	li a1 5
+	li a2 105
+	li a3 235
+	li a5,0
+	li a7,47
+	ecall
+	addi s0,s0,1
+	addi s2,s2,-1
+	add t2,t2,t0
+	addi t1,t1,1
+	j FOR1
+
+SAI1:	li s2,0
+	li s1,0
+	li s0,319
+	li s3,239
+	li t1,0
+FOR2:	bge t1,s5, SAI2
+	#mv a0,s0
+	#mv a1,s1
+	#mv a2,s2
+	#mv a3,s3
+	#mv a4,t2
+	li a0 105
+	li a1 5
+	li a2 314
+	li a3 5
+	li a4 0x0038
+	li a5,0
+	li a7,47
+	ecall
+	addi s1,s1,1
+	addi s3,s3,-1
+	add t2,t2,t0
+	addi t1,t1,1
+	j FOR2
+SAI2:	addi t0,t0,1
+	j LOOPDRAW
 
 
 
