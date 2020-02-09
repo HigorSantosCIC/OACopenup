@@ -1,0 +1,23 @@
+### To-Do List:
+- [ X ] Create initial screens
+- [ ] Initialize movement
+- [ ] Make movement system 100% functional
+- [ ] Add pseudo-randomly generated food
+- [ ] Increase snake's size when eating an apple
+- [ ] Add border collision
+- [ ] Add collision with the snake's own body
+- [ ] Add sound when food is eaten
+- [ ] Add sound when a life is lost
+- [ ] Add sound when it is game over
+- [ ] Use lives instead of instant game over when collision happens
+- [ ] Add score
+- [ ] Implement custom image loading
+- [ ] Show Game Over image on ending.
+- [ ] Make automatic movement
+- [ ] Use different speeds for the automatic movement according to the current score
+- [ ] Show number of lives in the screen's header
+- [ ] Add countdown before starting the game
+- [ ] Show current score in the screen's header
+- [ ] Show current snake's size in the screen's header
+- [ ] Write the scientific article regarding this project.
+- [ ] Finished.
