@@ -1,6 +1,7 @@
+  
 .data
-.include "snakegame2a.s"
-.include "snakegame2b.s"
+#.include "snakegame2a.s"
+#.include "snakegame2b.s"
 msg1: .string "SNAKE "
 roda_pe: .string "OAC VERAO"
 msg_start: .string "Inicializando o jogo: "
@@ -8,97 +9,15 @@ msg_high: .string "HIGHSCORE:"
 msg_speed: .string "Level Speed:"
 buffer: .string "  "
 NUM_NOTAS: .word 6 # Numero de Notas a tocar
-NOTAS: 69 500 76 500 74 500 76 500 79 600  76 1000 # lista de nota dura��o nota dura��o nota dura��o ...
-
-
+NOTAS: 79 500 96 500 84 500 96 500 89 600  96 1000 # lista de nota dura??o nota dura??o nota dura??o ...
 
 .text
 la tp exceptionHandling
 csrw tp utvec 
 csrsi ustatus 1
-
-li t0 2
-j TelaInicial
-
-
-TelaInicial:
-li t1 0xFF000000# endereco inicial da Memoria- Frame 0
-li t2 0xFF012C00# endereco final 
-la s1 snakegame2a
-addi s1 s1 8# primeiro pixels depois das informa��es de nlin ncol
-LOOP1: 
-beq t1 t2 Entrada# Se for o �ltimo endere�o ent�o sai do loop
-lw t3 0(s1)# le um conjunto de 4 pixels : word
-sw t3 0(t1)# escreve a word na mem�ria VGA
-addi t1 t1 4# soma 4 ao endere�o
-addi s1 s1 4
-j LOOP1# volta a verificar
-
-#enter para iniciar o menu
-Entrada: 
-li a7 105
-ecall
-
-la s0 NUM_NOTAS# define o endere�o do n�mero de notas
-lw s1 0(s0)# le o numero de notas
-la s0 NOTAS# define o endere�o das notas
-li t0 0# zera o contador de notas
-li a2 90# define o instrumento
-li a3 127# define o volume
-MUSICA:  
-beq t0 s1  Menu# contador chegou no final? ent�o  v� para FIM
-lw a0 0(s0)# le o valor da nota
-lw a1 4(s0)# le a duracao da nota
-li a7 31# define a chamada de syscall
-ecall# toca a nota
-mv a0 a1# passa a dura��o da nota para a pausa
-li a7 32# define a chamada de syscal 
-ecall# realiza uma pausa de a0 ms
-addi s0 s0 8# incrementa para o endere�o da pr�xima nota
-addi t0 t0 1# incrementa o contador de notas
-j MUSICA# volta ao loop
-
 Menu:
 li t0 2
-li t3  32
-beq t3  a7  SEMCOL
-li a0 40# define a nota
-li a1 1500# define a dura��o da nota em ms
-li a2 127# define o instrumento
-li a3 127# define o volume
-li a7 33# define o syscall
-ecall# toca a nota
-SEMCOL: 
-li t1 0xFF000000# endereco inicial da Memoria VGA - Frame 0
-li t2 0xFF012C00# endereco final 
-la s1 snakegame2b
-addi s1 s1 8# cor preto
-LOOP3: beq t1 t2 FIM
-lw t3 0(s1)# Se for o �ltimo endere�o ent�o sai do loop
-sw t3 0(t1)# escreve a word na mem�ria VGA
-addi t1 t1 4
-addi s1 s1 4# soma 4 ao endere�o
-j LOOP3# volta a verificar
 
-FIM:
-li a7 105
-ecall
-bge a0 t0 sai
-j inicio
-sai:
-li t1 0xFF000000# endereco inicial da Memoria VGA - Frame 0
-li t2 0xFF012C00# endereco final 
-li t3 0x00000000# cor vermelho|vermelho|vermelhor|vermelho
-LOOP: 
-beq t1 t2 sai2# Se for o �ltimo endere�o ent�o sai do loop
-sw t3 0(t1)# escreve a word na mem�ria VGA
-addi t1 t1 4# soma 4 ao endere�o
-j LOOP# volta a verificar
-
-sai2:   li a7 10
-ecall
-inicio:
-#zerando o os registradores
 li s11 0
 li s10 0
 jal CLS
@@ -336,7 +255,7 @@ li s0 1 #se ta virado pra esquerdA
 #input flag
 input:
 
-li t1 0xff200000 #Endere�o do MMIO
+li t1 0xff200000 #Endere?o do MMIO
 lw t0 0(t1)  #Le o bit de controle do teclado
 andi t0 t0 0x0001 #Mascara o bit menos significativo
 
@@ -652,8 +571,8 @@ beq a2 s7 testay
 j input
 
 COLISAO:
-lw a2 8(sp) #x cabe�a
-lw a3 4(sp) #y cabe�a
+lw a2 8(sp) #x cabe?a
+lw a3 4(sp) #y cabe?a
 beq a2 t3 Menu
 beq a2 t4 Menu
 beq a3 t5 Menu
@@ -664,7 +583,13 @@ testay:
 lw a3 4(sp)
 beq a3 s8 apaga_comida
 j input
-apaga_comida:   
+apaga_comida: 
+li a0,90		# define a nota
+li a1,500		# define a duração da nota em ms
+li a2,121		# define o instrumento
+li a3,127		# define o volume
+li a7,31
+ecall  
 li a7 147
 add a0 s7 zero
 add a1 s8 zero
@@ -683,26 +608,31 @@ jal sorteia_comida
 j input
 
 sorteia_comida:
-li t1 10
-x:li a0  0
-li a1  130
-li a7 42
+li t2 10
+
+x:
+li a7 41
 ecall
-addi a0 a0 100
-remu t0 a0 t1
+
+li t3 201
+add t0 a0 zero
+remu t0 a0 t3
+addi t0 t0 102
+addi s7 t0 0
+remu t0 s7 t2
 bne t0 zero x
-mv s7 a0 #valor de x
 
 y:
-li a0  0
-li a1  140
-li a7 42
+li t4 218
+li a7 41
 ecall
 
-addi a0 a0 20
-remu t0 a0 t1
-bne t0 zero y
-mv s8 a0 #valor de y
+add t1 a0 zero
+remu t1 a0 t4
+addi t1 t1 11
+addi s8 t1 0
+remu t1 s8 t2
+bne t1 zero y
 
 li a7 147
 mv a0 s7
@@ -715,3 +645,4 @@ ecall
 ret
 
 .include "SYSTEMv17b.s"
+
