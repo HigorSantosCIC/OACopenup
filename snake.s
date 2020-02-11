@@ -650,8 +650,6 @@ COLISAO:
 	beq a3,t6,Menu
 	ret
 
-
-
 testay:			
 	lw a3,4(sp)
 	beq a3,s8,apaga_comida
