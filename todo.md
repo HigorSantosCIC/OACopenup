@@ -2,22 +2,20 @@
 - [ X ] Create initial screens
 - [ X ] Initialize movement
 - [ X ] Make movement system 100% functional
-- [ ] Add pseudo-randomly generated food
-- [ ] Increase snake's size when eating an apple
+- [ X] Add pseudo-randomly generated food
+- [ X] Increase snake's size when eating an apple
 - [ X ] Add border collision
 - [ ] Add collision with the snake's own body
-- [ ] Add sound when food is eaten
-- [ ] Add sound when a life is lost
-- [ ] Add sound when it is game over
+- [ X] Add sound when food is eaten
+- [ X] Add sound when it is game over
 - [ X ] Use lives instead of instant game over when collision happens
 - [ X ] Add score
 - [ X ] Implement custom image loading
-- [ ] Show Game Over image on ending.
-- [ ] Make automatic movement
-- [ ] Use different speeds for the automatic movement according to the current score
-- [ ] Show number of lives in the screen's header
+- [ X ] Show Game Over image on ending.
+- [ X] Make automatic movement
+- [ X] Use different speeds for the automatic movement according to the current score
 - [ X ] Add countdown before starting the game
-- [ ] Show current score in the screen's header
+- [ X] Show current score in the screen's header
 - [ ] Show current snake's size in the screen's header
-- [ ] Write the scientific article regarding this project.
-- [ ] Finished.
+- [X ] Write the scientific article regarding this project.
+- [ X] Finished.
